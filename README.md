@@ -9,16 +9,6 @@ A full-stack web application built with Flask and SQLAlchemy that provides a com
 
 ---
 
-## 📸 Screenshots
-
-*(It's highly recommended to replace these placeholders with actual screenshots of your application)*
-
-| User Dashboard | Find Parking | Admin Dashboard |
-| :---: | :---: | :---: |
-| ![User Dashboard](https://via.placeholder.com/300x200.png?text=User+Dashboard) | ![Find Parking](https://via.placeholder.com/300x200.png?text=Find+Parking+Page) | ![Admin Dashboard](https://via.placeholder.com/300x200.png?text=Admin+Dashboard) |
-
----
-
 ## ✨ Core Features
 
 This application is divided into two main roles: **User** and **Admin**.
@@ -133,7 +123,3 @@ This project has a solid foundation that can be extended with more advanced feat
 * **Password Reset**: Implement a "Forgot Password" feature using email verification.
 
 ---
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
