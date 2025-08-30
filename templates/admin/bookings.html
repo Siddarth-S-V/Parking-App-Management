@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}All Bookings - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="fas fa-calendar-check"></i> All Bookings</h2>
+            <hr>
+        </div>
+    </div>
+
+    {% if bookings %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Parking Lot</th>
+                                    <th>Spot</th>
+                                    <th>Vehicle</th>
+                                    <th>Entry Time</th>
+                                    <th>Exit Time</th>
+                                    <th>Status</th>
+                                    <th>Cost</th>
+                                    <th>Booked On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking, user, lot, spot in bookings %}
+                                <tr>
+                                    <td>#{{ booking.id }}</td>
+                                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                    <td>{{ lot.name }}</td>
+                                    <td>{{ spot.spot_number }}</td>
+                                    <td>{{ booking.vehicle_no }}</td>
+                                    <td>{{ booking.entry_time.strftime('%d/%m/%Y %H:%M') }}</td>
+                                    <td>{{ booking.exit_time.strftime('%d/%m/%Y %H:%M') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if booking.status == 'active' else 'secondary' if booking.status == 'completed' else 'danger' }}">
+                                            {{ booking.status.title() }}
+                                        </span>
+                                    </td>
+                                    <td>₹{{ "%.2f"|format(booking.total_cost) }}</td>
+                                    <td>{{ booking.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-times fa-5x text-muted mb-3"></i>
+                    <h5>No bookings found</h5>
+                    <p class="text-muted">Bookings will appear here once users start making reservations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

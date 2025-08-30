@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Confirmed - Parking Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white text-center">
+                    <h4><i class="fas fa-check-circle"></i> Booking Confirmed!</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-parking fa-5x text-success mb-3"></i>
+                        <h5>Your parking spot has been reserved successfully</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-building"></i> Parking Details</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Parking Lot:</strong></td>
+                                    <td>{{ parking_lot.name }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Address:</strong></td>
+                                    <td>{{ parking_lot.address }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Spot Number:</strong></td>
+                                    <td>{{ spot.spot_number }}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-car"></i> Vehicle Details</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Vehicle:</strong></td>
+                                    <td>{{ vehicle.vehicle_no }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Brand:</strong></td>
+                                    <td>{{ vehicle.vehicle_brand }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Type:</strong></td>
+                                    <td>{{ vehicle.vehicle_type }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h6><i class="fas fa-clock"></i> Booking Details</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Entry Time:</strong></td>
+                                    <td>{{ booking.entry_time.strftime('%d/%m/%Y %H:%M') }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Exit Time:</strong></td>
+                                    <td>{{ booking.exit_time.strftime('%d/%m/%Y %H:%M') }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Duration:</strong></td>
+                                    <td>{{ "%.1f"|format((booking.exit_time - booking.entry_time).total_seconds() / 3600) }} hours</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Cost:</strong></td>
+                                    <td><span class="h5 text-success">₹{{ "%.2f"|format(booking.total_cost) }}</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Important:</strong> Please arrive on time and present this confirmation. 
+                        You can view and manage your booking from "My Bookings" section.
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-custom me-2">
+                            <i class="fas fa-home"></i> Go to Dashboard
+                        </a>
+                        <a href="{{ url_for('view_reservations') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-list"></i> My Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

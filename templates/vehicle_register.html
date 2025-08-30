@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Vehicle Registration - Parking Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="fas fa-car"></i> Vehicle Management</h2>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5><i class="fas fa-plus"></i> Register New Vehicle</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="owner_name" class="form-label">Owner Name</label>
+                            <input type="text" class="form-control" id="owner_name" name="owner_name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">Mobile Number</label>
+                            <input type="tel" class="form-control" id="mobile" name="mobile" pattern="[0-9]{10}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="vehicle_type" class="form-label">Vehicle Type</label>
+                            <select class="form-select" id="vehicle_type" name="vehicle_type" required>
+                                <option value="">Select Type</option>
+                                <option value="2 Wheeler">2 Wheeler</option>
+                                <option value="4 Wheeler">4 Wheeler</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="vehicle_brand" class="form-label">Vehicle Brand</label>
+                            <input type="text" class="form-control" id="vehicle_brand" name="vehicle_brand" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="vehicle_no" class="form-label">Vehicle Number</label>
+                            <input type="text" class="form-control" id="vehicle_no" name="vehicle_no" 
+                                   placeholder="e.g., TN01AB1234" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-custom">
+                                <i class="fas fa-plus"></i> Register Vehicle
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5><i class="fas fa-list"></i> My Vehicles</h5>
+                </div>
+                <div class="card-body">
+                    {% if vehicles %}
+                    <div class="list-group">
+                        {% for vehicle in vehicles %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ vehicle.vehicle_no }}</h6>
+                                <small class="text-muted">{{ vehicle.created_at.strftime('%d/%m/%Y') }}</small>
+                            </div>
+                            <p class="mb-1">
+                                <strong>Brand:</strong> {{ vehicle.vehicle_brand }}<br>
+                                <strong>Type:</strong> {{ vehicle.vehicle_type }}<br>
+                                <strong>Owner:</strong> {{ vehicle.owner_name }}
+                            </p>
+                            <small class="text-muted">Mobile: {{ vehicle.mobile }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center">
+                        <i class="fas fa-car fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No vehicles registered yet.</p>
+                        <p class="text-muted">Register your first vehicle to start booking parking!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

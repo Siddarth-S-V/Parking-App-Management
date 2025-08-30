@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Parking Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="fas fa-tachometer-alt"></i> Welcome, {{ user.first_name }}!</h2>
+            <hr>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>{{ stats.total_vehicles }}</h3>
+                            <p class="mb-0">My Vehicles</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-car fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>{{ stats.total_bookings }}</h3>
+                            <p class="mb-0">Total Bookings</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-calendar fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>{{ stats.active_bookings }}</h3>
+                            <p class="mb-0">Active Bookings</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-parking fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ url_for('vehicle_register') }}" class="btn btn-custom w-100">
+                                <i class="fas fa-plus"></i> Add Vehicle
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ url_for('parking_lots') }}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-search"></i> Find Parking
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ url_for('view_reservations') }}" class="btn btn-outline-success w-100">
+                                <i class="fas fa-list"></i> My Bookings
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ url_for('vehicle_register') }}" class="btn btn-outline-info w-100">
+                                <i class="fas fa-car"></i> My Vehicles
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Bookings -->
+    {% if recent_bookings %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-history"></i> Recent Bookings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Parking Lot</th>
+                                    <th>Spot</th>
+                                    <th>Vehicle</th>
+                                    <th>Entry Time</th>
+                                    <th>Status</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking, lot, spot, vehicle in recent_bookings %}
+                                <tr>
+                                    <td>{{ lot.name }}</td>
+                                    <td>{{ spot.spot_number }}</td>
+                                    <td>{{ vehicle.vehicle_no }}</td>
+                                    <td>{{ booking.entry_time.strftime('%d/%m/%Y %H:%M') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if booking.status == 'active' else 'secondary' }}">
+                                            {{ booking.status.title() }}
+                                        </span>
+                                    </td>
+                                    <td>₹{{ "%.2f"|format(booking.total_cost) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-times fa-5x text-muted mb-3"></i>
+                    <h5>No bookings yet</h5>
+                    <p class="text-muted">Start by registering a vehicle and finding parking spots!</p>
+                    <a href="{{ url_for('vehicle_register') }}" class="btn btn-custom">
+                        <i class="fas fa-plus"></i> Register Vehicle
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

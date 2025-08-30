@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Parking Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+            <hr>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-2">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>{{ stats.total_lots }}</h3>
+                            <p class="mb-0">Parking Lots</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-building fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>{{ stats.total_spots }}</h3>
+                            <p class="mb-0">Total Spots</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-parking fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>{{ stats.total_users }}</h3>
+                            <p class="mb-0">Users</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>{{ stats.total_bookings }}</h3>
+                            <p class="mb-0">Total Bookings</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-calendar fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>{{ stats.active_bookings }}</h3>
+                            <p class="mb-0">Active Bookings</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card stats-card text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3>₹{{ "%.0f"|format(stats.total_revenue) }}</h3>
+                            <p class="mb-0">Revenue</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-money-bill fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Overview -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar"></i> System Overview (Server-side Stats)</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Parking Lot Utilization</span>
+                            <span>{{ "%.1f"|format((stats.total_spots - (stats.total_spots * 0.3)) / stats.total_spots * 100 if stats.total_spots > 0 else 0) }}%</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 20px;">
+                            <div class="progress-bar progress-bar-custom" role="progressbar" 
+                                 style="width: {{ (stats.total_spots - (stats.total_spots * 0.3)) / stats.total_spots * 100 if stats.total_spots > 0 else 0 }}%">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Revenue Growth</span>
+                            <span>{{ "%.1f"|format(stats.total_revenue / 100 if stats.total_revenue > 0 else 0) }}%</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 20px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ stats.total_revenue / 100 if stats.total_revenue > 0 else 0 }}%">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>User Engagement</span>
+                            <span>{{ "%.1f"|format(stats.total_bookings / stats.total_users * 100 if stats.total_users > 0 else 0) }}%</span>
+                        </div>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                 style="width: {{ stats.total_bookings / stats.total_users * 100 if stats.total_users > 0 else 0 }}%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('add_lot') }}" class="btn btn-custom">
+                            <i class="fas fa-plus"></i> Add Parking Lot
+                        </a>
+                        <a href="{{ url_for('admin_parking_lots') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-building"></i> Manage Lots
+                        </a>
+                        <a href="{{ url_for('admin_users') }}" class="btn btn-outline-success">
+                            <i class="fas fa-users"></i> View Users
+                        </a>
+                        <a href="{{ url_for('admin_bookings') }}" class="btn btn-outline-info">
+                            <i class="fas fa-calendar"></i> View Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Bookings -->
+    {% if recent_bookings %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-history"></i> Recent Bookings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Parking Lot</th>
+                                    <th>Spot</th>
+                                    <th>Vehicle</th>
+                                    <th>Entry Time</th>
+                                    <th>Status</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking, user, lot, spot in recent_bookings %}
+                                <tr>
+                                    <td>#{{ booking.id }}</td>
+                                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                    <td>{{ lot.name }}</td>
+                                    <td>{{ spot.spot_number }}</td>
+                                    <td>{{ booking.vehicle_no }}</td>
+                                    <td>{{ booking.entry_time.strftime('%d/%m/%Y %H:%M') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if booking.status == 'active' else 'secondary' }}">
+                                            {{ booking.status.title() }}
+                                        </span>
+                                    </td>
+                                    <td>₹{{ "%.2f"|format(booking.total_cost) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="fas fa-users"></i> Registered Users</h2>
+            <hr>
+        </div>
+    </div>
+
+    {% if users %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Address</th>
+                                    <th>Pincode</th>
+                                    <th>Joined</th>
+                                    <th>Vehicles</th>
+                                    <th>Active Bookings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <td>#{{ user.id }}</td>
+                                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.address }}</td>
+                                    <td>{{ user.pincode }}</td>
+                                    <td>{{ user.created_at.strftime('%d/%m/%Y') }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ user.vehicles|length }}</span>
+                                    </td>
+                                    <td>
+                                        {% set active_bookings = user.bookings|selectattr("status", "equalto", "active")|list %}
+                                        <span class="badge bg-{{ 'success' if active_bookings|length > 0 else 'secondary' }}">
+                                            {{ active_bookings|length }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-slash fa-5x text-muted mb-3"></i>
+                    <h5>No registered users</h5>
+                    <p class="text-muted">Users will appear here once they register.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
